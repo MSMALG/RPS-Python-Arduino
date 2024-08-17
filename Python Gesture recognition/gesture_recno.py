@@ -1,4 +1,6 @@
-# gesture_recno.py
+#Gesture recognition file using the distance-based method 
+#Written in a separate file for testing 
+
 import csv
 import HandLandMarks as HM
 import cv2
@@ -43,7 +45,7 @@ def gesture_identifier(knownGestures, unknownGesture, keypts, GestNames, toleran
 
     return gesture
 
-# Loading known gestures and labels
+#Loading known gestures and labels
 known_gestures = []
 labels = []
 
@@ -59,47 +61,38 @@ with open('gesture_data.csv', mode='r') as file:
 
 KeyPoints = [0, 4, 8, 12, 16, 20, 5, 9, 13, 17]
 
-# Set up camera dimensions
+
 width = 1280
 height = 720
 cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
-# Initialize the hand landmarks detection
+
 FindHands = HM.mpHands(1)
 
-# Main loop for gesture recognition
 while True:
     ignore, frame = cam.read()
-
-    # Check if frame was captured
-    if not ignore:
-        print("Error: Could not read frame.")
-        break
 
     HandsLm = FindHands.Lmarks(frame)
 
     if HandsLm:
         for hand in HandsLm:
-            # Calculate the distance matrix for the current hand
+            #Calculating the distance matrix for the current hand
             unknown_gesture = calc_distance(hand)
 
-            # Identify the gesture
+            #Identifying the gesture
             gesture = gesture_identifier(known_gestures, unknown_gesture, KeyPoints, labels, tolerance=10)
             cv2.putText(frame, f'Gesture: {gesture}', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-            # Draw landmarks
             for idx in KeyPoints:
-                cv2.circle(frame, hand[idx], 5, (0, 0, 255), 2)  # Draw the landmark points
+                cv2.circle(frame, hand[idx], 5, (0, 0, 255), 2) 
 
-    # Show the frame with gesture recognition
+   
     cv2.imshow("Gesture Recognition", frame)
 
-    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release the camera and close any OpenCV windows
 cam.release()
 cv2.destroyAllWindows()
