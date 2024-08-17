@@ -1,3 +1,5 @@
+#Class file that detects the hand landmarks using the MediaPipe library.
+
 import cv2
 import numpy as np 
 
