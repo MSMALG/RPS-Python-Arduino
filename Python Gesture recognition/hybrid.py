@@ -1,3 +1,6 @@
+#Gesture recognition file using the hybrid system
+#Written in a separate file for testing 
+
 import csv
 import HandLandMarks as HM
 import cv2
@@ -43,34 +46,34 @@ def gesture_identifier(knownGestures, unknownGesture, keypts, GestNames, toleran
 
     return gesture
 
-# Load the SVM model and scaler
+#Loading the SVM model and scaler
 svm_model = joblib.load('svm_gesture_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-# Loading known gestures and labels for the distance-based method
+#Loading known gestures and labels for the distance-based method
 known_gestures = []
 labels = []
 with open('gesture_data.csv', mode='r') as file:
     reader = csv.reader(file)
     next(reader)  # Skip header
     for row in reader:
-        landmarks = list(map(float, row[:-1]))  # All but the last column
-        label = row[-1]  # Last column is the label
+        landmarks = list(map(float, row[:-1]))  #All but the last column
+        label = row[-1]  #Last column is the label
         landmarks = np.array(landmarks).reshape(-1, 2)
-        known_gestures.append(calc_distance(landmarks))  # Store distance matrices
+        known_gestures.append(calc_distance(landmarks))  #Store distance matrices
         labels.append(label)
 
-# Create a mapping dictionary for labels
+#Creating a mapping dictionary for labels
 label_mapping = {i: label for i, label in enumerate(labels)}
 
 KeyPoints = [0, 4, 8, 12, 16, 20, 5, 9, 13, 17]
 
-# Set up camera dimensions
+
 cam = cv2.VideoCapture(0)
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
-# Initialize hand landmarks detection
+
 FindHands = HM.mpHands(1)
 
 while True:
@@ -82,27 +85,25 @@ while True:
     
     if HandsLm:
         for hand in HandsLm:
-            # Distance matrix-based prediction
+            # Distance based method prediction
             unknown_gesture = calc_distance(hand)
             gesture_dist = gesture_identifier(known_gestures, unknown_gesture, KeyPoints, labels, tolerance=10)
 
             if gesture_dist == "Unknown":
-                # SVM-based prediction
-                raw_features = np.array(hand).flatten()  # Flattening the landmark coordinates
+                # SVM model prediction
+                raw_features = np.array(hand).flatten()  #Flattening the landmark coordinates
                 scaled_features = scaler.transform([raw_features])
                 svm_prediction = svm_model.predict(scaled_features)[0]
-                final_gesture = "Unknown"  # Ensuring Unknown is maintained
+                final_gesture = "Unknown"  
             else:
                 final_gesture = gesture_dist
 
-            # Debugging statements
             print(f"Distance-based gesture: {gesture_dist}")
             print(f"SVM-based gesture: {final_gesture}")
 
-            # Display the final recognized gesture
+            #Displaying the final recognized gesture
             cv2.putText(frame, f'Gesture: {final_gesture}', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-            # Draw landmarks
             for idx in KeyPoints:
                 cv2.circle(frame, tuple(hand[idx]), 5, (0, 0, 255), 2)
 
