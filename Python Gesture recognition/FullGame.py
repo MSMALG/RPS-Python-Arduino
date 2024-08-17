@@ -1,3 +1,5 @@
+#Main File that contains the hybrid system and implementing it into the game 
+
 import csv
 import HandLandMarks as HM
 import cv2
