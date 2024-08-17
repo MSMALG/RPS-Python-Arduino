@@ -40,3 +40,11 @@ This script integrates gesture recognition with Arduino to control a robotic han
 
 - **File: `FullGame.py`**
   - Recognizes gestures in real-time, communicates with Arduino via serial port to control the robotic hand, and determines game outcomes using LEDs.
+
+### 7. Arduino Implementation
+This script controls five servos representing the fingers of a robotic hand, executing Rock, Paper, and Scissors gestures based on commands received over the serial port.
+
+- **File: `hand.py`**
+  - The Rock, Paper, and Scissors functions control the movement of the servos to perform each gesture.
+  - LEDs indicate whether the player won, lost, or if the game resulted in a tie.
+  - The system prevents executing the same command repeatedly, ensuring smoother gameplay.
