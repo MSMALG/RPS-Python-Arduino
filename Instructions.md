@@ -17,7 +17,7 @@ If you do so, either remove the existing `gesture_data.csv` file or save your da
 Create the SVM model by running the `svm.py` script. This will generate the model and scaler files needed for the game.
 
 ### IV. Game flow
-After completing the previous steps, you’re ready to play the game. If you’ve connected the servos and LEDs to an Arduino, run the FullGame.py file.
+After completing the previous steps, you’re ready to play the game. If you’ve connected the servos and LEDs to an Arduino, run `FullGame.py` file.
 If you’re not using Arduino, comment out or remove the following lines:
 
 Line 11: arduino = serial.Serial(port='COM3', baudrate=115200),
