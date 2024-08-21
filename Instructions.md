@@ -21,8 +21,11 @@ After completing the previous steps, you’re ready to play the game. If you’v
 If you’re not using Arduino, comment out or remove the following lines:
 
 Line 11: arduino = serial.Serial(port='COM3', baudrate=115200),
+
 Servo and LED control functions,
+
 Line 173: control_servos(computer_gesture),
+
 and Line 188: control_leds(result).
 
 ### V. Hybrid and Gesture Recognition testing
