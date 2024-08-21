@@ -1,6 +1,7 @@
 # Hand Gesture Recognition 
 
 This project implements a hand gesture recognition system using the MediaPipe library, distance-based gesture recognition, and an SVM model. The system recognizes gestures such as Rock, Paper, and Scissors, and can be integrated with a robotic hand via Arduino to play a Rock-Paper-Scissors game. 
+For instruction on how to run this project please reference [Instructions.md](./Instructions.md)
 
 ## Project Structure
 
